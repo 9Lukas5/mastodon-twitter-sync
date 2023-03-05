@@ -3,3 +3,6 @@
 **/*.rs.bk
 /*cache.json
 mastodon-twitter-sync.toml
+
+.idea/
+*.iml
