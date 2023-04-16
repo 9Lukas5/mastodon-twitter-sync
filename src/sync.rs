@@ -6,6 +6,7 @@ use elefren::entities::status::Status;
 use regex::Regex;
 use std::collections::HashSet;
 use std::fs;
+use elefren::status_builder::Visibility;
 use unicode_segmentation::UnicodeSegmentation;
 
 // Represents new status updates that should be posted to Twitter (tweets) and
@@ -134,6 +135,13 @@ pub fn determine_posts(
             None => tweet_shorten(&fulltext, &toot.url),
             Some(reblog) => tweet_shorten(&fulltext, &reblog.url),
         };
+
+        // ignore toots that are not public or unlisted
+        match toot.visibility
+        {
+            Visibility::Public | Visibility::Unlisted => (),
+            _ => continue,
+        }
 
         for tweet in twitter_statuses {
             // If the toot already exists we can stop here and know that we are
